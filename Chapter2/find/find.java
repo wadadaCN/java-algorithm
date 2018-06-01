@@ -1,5 +1,3 @@
-package xiekun.me
-
 /**
 * @version 1.00 2018/6/1
 * @author xiekun
@@ -11,7 +9,7 @@ public class find{
 		int[] aList = {1, 2, 4, 5};
 		int v = 5;
 		dichFind(aList, 0, aList.length - 1, v);
-		linearFind(aList, v);
+		System.out.println(linearFind(aList, v));
 	}
 	
 	public static void dichFind(int[] sorted, int h, int f, int v){
@@ -24,16 +22,15 @@ public class find{
 		else System.out.println(-1);
 	}
 
-	public static void linearFind(int[] A, int v){
+	public static int linearFind(int[] A, int v){
 		for (int i = 0;i < A.length + 1;i++){
 			if (i == A.length){
-				System.out.println(-1);
-				break;
+				return -1;
 			}
 			if (A[i] == v){
-				System.out.println(i);
-				break;
+				return i;
 			}
 		}
+		return -1;
 	}
 }
