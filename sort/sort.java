@@ -8,7 +8,8 @@ public class sort{
 		int[] aList = {5,2,1,4,3};
 		//InsertionSort(aList);
 		//SelectionSort(aList);
-		MergeSort(aList, 0, 4);
+		//MergeSort(aList, 0, aList.length - 1);
+		BubbleSort(aList);
 		for(int num:aList) System.out.print(num);
 	}
 	
@@ -72,6 +73,18 @@ public class sort{
 			MergeSort(unSorted, h, m);
 			MergeSort(unSorted, m + 1, f);
 			Merge(unSorted, h, m, f);
+		}
+	}
+	
+	public static void BubbleSort(int[] unSorted){
+		for (int i = 0;i < unSorted.length - 1;i++){
+			for (int j = unSorted.length - 1;j > i;j--){
+				if (unSorted[j] < unSorted[j - 1]){
+					int temp = unSorted[j];
+					unSorted[j] = unSorted[j - 1];
+					unSorted[j - 1] = temp;
+				}
+			}
 		}
 	}
 }
