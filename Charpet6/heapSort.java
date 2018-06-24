@@ -112,6 +112,14 @@ public class heapSort{
         heapIncreaseKey(B, B[0], key);
         return B;
     }
+    
+    public static int heapDelete(int[] A, int i){
+        int del = A[i];
+        A[i] = A[A[0]];
+        A[0] = A[0] - 1;
+        maxHeapify(A, i);
+        return del;
+    }
 }
 
 
