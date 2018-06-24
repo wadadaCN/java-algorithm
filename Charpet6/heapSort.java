@@ -76,7 +76,43 @@ public class heapSort{
         }
     }
 
-
+    //最大优先队列
+    public static int heapMaximum(int[] A){
+        return A[1];
+    }
+    
+    public static int heapExtractMax(int[] A){
+        if (A[0] < 1){
+            System.out.println("heap underflow"); // 此处应抛出异常并结束程序
+        }
+        int max = A[1];
+        A[1] = A[A[0]];
+        A[0] = A[0] - 1;
+        maxHeapify(A, 1);
+        return max;
+    }
+    
+    public static void heapIncreaseKey(int[] A, int i, int key){
+        if (key < A[i]){
+            System.out.println("new key is smaller than current key"); // 此处应抛出异常并结束程序
+        }
+        A[i] = key;
+        while (i > 0 && A[parent(i)] < key){
+            A[i] = A[parent(i)];
+            i = parent(i);
+        }
+        A[i] = key;
+    }
+    
+    public static int[] maxHeapInsert(int[] A, int key){
+        int[] B = new int[A.length + 1];
+        B[0] = A[0] + 1;
+        for (int i = 1;i < A.length;i++) B[i] = A[i];
+        B[B[0]] = -2147483648;
+        heapIncreaseKey(B, B[0], key);
+        return B;
+    }
+}
 
 
 
