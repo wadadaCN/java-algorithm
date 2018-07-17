@@ -1,3 +1,8 @@
+/**
+* @version 1.00 2018.7.17
+* @author xiekun
+*/
+
 import java.util.ArrayList;
 
 public class Tree{
@@ -37,7 +42,7 @@ public class Tree{
 		}
     }
 	
-	private void treeInsert(Tree T, treeNode z){
+	private void treeInsertWithWhile(Tree T, treeNode z){
 		treeNode y = null;
 		treeNode x = T.root;
 		while (x != null){
@@ -49,6 +54,29 @@ public class Tree{
 		if (y == null) T.root = z;
 		else if (z.val < y.val) y.left = z;
 		else y.right = z;
+	}
+	
+	private void treeInsert(Tree T, treeNode z){
+		if (T.root == null) T.root = z;
+		else T.treeInsert(T.root, z);
+	}
+	private void treeInsert(treeNode node, treeNode z){
+		if (z.val < node.val){
+			z.parent = node;
+			if (node.left != null) {
+				node = node.left;
+				treeInsert(node, z);
+			}
+			else node.left = z;
+		}
+		else{
+			z.parent = node;
+			if (node.right != null) {
+				node = node.right;
+				treeInsert(node, z);
+			}
+			else node.right = z;
+		}
 	}
 	
 	private void buildTree(Tree T, int x){
@@ -72,20 +100,60 @@ public class Tree{
 	    return node;
 	}
 	
-	private treeNode treeMinimum(){
-		treeNode x = this.root;
+	private treeNode treeMinimum(treeNode x){
 		while (x.left != null){
 			x = x.left;
 		}
 		return x;
 	}
 	
-	private treeNode treeMaximum(){
-		treeNode x = this.root;
+	private treeNode treeMaximum(treeNode x){
 		while (x.right != null){
 			x = x.right;
 		}
 		return x;
+	}
+	
+	private treeNode nodeSuccessor(treeNode x){
+		if (x.right != null) return treeMinimum(x.right);
+		treeNode y = x.parent;
+		while (y != null && x == y.right){
+			x = y;
+			y = x.parent;
+		}
+		return y;
+	}
+	
+	private treeNode nodePredecessor(treeNode x){
+		if (x.left != null) return treeMaximum(x.left);
+		treeNode y = x.parent;
+		while (y != null && x == y.left){
+			x = y;
+			y = x.parent;
+		}
+		return y;
+	}
+	
+	private void transplant(Tree T, treeNode u, treeNode v){
+		if (u.parent == null) T.root = v;
+		else if (u == u.parent.left) u.parent.left = v;
+		else u.parent.right = v;
+		if (v != null) v.parent = u.parent;
+	}
+	private void treeDelete(Tree T, treeNode z){
+		if (z.left == null) transplant(T, z, z.right);
+		else if (z.right == null) transplant(T, z, z.left);
+		else{
+			treeNode y = treeMinimum(z.right);
+			if (y.parent != z){
+				transplant(T, y, y.right);
+				y.right = z.right;
+				z.right.parent = y;
+			}
+			transplant(T, z, y);
+			y.left = z.left;
+			z.left.parent = y;
+		}
 	}
 	
 	public static void main(String[] args){
@@ -98,12 +166,16 @@ public class Tree{
 		for (Integer item:T.inorderList){
 		    System.out.println(item);
 		}
-		//int aimKey = 6;
-		//treeNode result = T.treeSearchWithWhile(T.root, aimKey);
-		//if (result != null){
-		//    System.out.println(result.val);
-		//}
-		System.out.println(T.treeMaximum().val);
+		int aimKey = 9;
+		treeNode result = T.treeSearchWithWhile(T.root, aimKey);
+		treeNode predecessor = T.nodePredecessor(result);
+		T.treeDelete(T, predecessor);
+		T.inorderTreeWalk(T.root);
+		for (Integer item:T.inorderList){
+		    System.out.println(item);
+		}
+		//System.out.println(predecessor.val);
+		//System.out.println(T.treeMaximum(T.root).val);
 	}
 }
 
